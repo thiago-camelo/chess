@@ -1,53 +1,41 @@
-import Board from "./Entities/Board"
-import Position from "./Entities/Position"
-
-
+import Board from './Entities/Board'
+import Position from './Entities/Position'
 
 class CliInterface {
+	constructor(private board: Board) {}
 
-    constructor(
-        private board: Board
-    ) { }
+	public drawBoard(): void {
+		const indexes = [1, 2, 3, 4, 5, 6, 7, 8]
 
-    public drawBoard(): void {
+		/**
+		 * case player
+		 * brancas: reverse(y)
+		 * pretas: reverse(x) // testar antes kkk
+		 */
+		for (const y of indexes.reverse()) {
+			// indexes.reverse()) { // como se o player sempre fosse as brancas
 
-        let indexes = [1,2,3,4,5,6,7,8]
+			const line: Array<string> = []
 
-        /**
-         * case player
-         * brancas: reverse(y)
-         * pretas: reverse(x) // testar antes kkk
-         */
-        for (let y of indexes.reverse()) { // indexes.reverse()) { // como se o player sempre fosse as brancas
+			for (const x of indexes) {
+				const piece = this.board.getPieceInPosition(new Position(x, y))
 
-            let line: Array<string> = []
+				if (piece) {
+					line.push(piece.toString())
+				} else {
+					line.push((x + y) % 2 ? 'X' : 'O')
+				} // mudar para X preto, O branco
+			}
 
-            for (let x of indexes) {
+			console.log(line.join(', '))
+		}
 
-                let piece = this.board.getPieceInPosition(new Position(x, y))
-            
-                if (piece)
-                    line.push(piece.toString())
-                else
-                    line.push((x + y) % 2 ? 'X' : 'O') // mudar para X preto, O branco
-                    
-            }
-                
-            console.log(line.join(', '))
+		console.log('')
+	}
 
-        }
-
-        console.log('')
-
-    }
-
-    public play() {
-
-        this.board.move(new Position(2,2), new Position(2,3))
-
-    }
-
+	public play() {
+		this.board.move(new Position(2, 2), new Position(2, 3))
+	}
 }
-
 
 export default CliInterface

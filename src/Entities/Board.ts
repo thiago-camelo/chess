@@ -1,85 +1,73 @@
-import Pawn from "./Pieces/Pawn"
-import Piece from "./Pieces/Piece"
-import Position from "./Position"
-
-
+import Pawn from './Pieces/Pawn'
+import Piece from './Pieces/Piece'
+import Position from './Position'
+import Player from '../Enums/Player'
 
 class Board {
-    
-    private rodada: Player
-    private pieces: Array<Piece>
-    
-    constructor() {
+	private rodada: Player
+	private pieces: Array<Piece>
 
-        this.rodada = Player.White
-        this.pieces = []
+	constructor() {
+		this.rodada = Player.White
+		this.pieces = []
 
-        this.initPieces(Player.White)
-        this.initPieces(Player.Black)
+		this.initPieces(Player.White)
+		this.initPieces(Player.Black)
 
-        console.log('peças iniciadas')
+		// console.log('peças iniciadas')
 
-        console.log(this.pieces)
+		console.log(this.pieces)
+	}
 
-    }
+	private initPieces(player: Player): void {
+		for (const x of [1, 2, 3, 4, 5, 6, 7, 8]) {
+			// more ease
 
-    private initPieces(player: Player): void {
+			const pawnLine = player === Player.White ? 2 : 7
 
-        for (let x of [1,2,3,4,5,6,7,8]) { // more ease
+			this.pieces.push(new Pawn(player, new Position(x, pawnLine)))
+		}
 
-            let pawnLine = player == Player.White ? 2 : 7
+		// outras peças
+	}
 
-            this.pieces.push(new Pawn(player, new Position(x, pawnLine)))
+	public move(origin: Position, destination: Position) {
+		// pegar peça origin
+		const originPiece = this.getPieceInPosition(origin)
+		const destinationPiece = this.getPieceInPosition(destination)
 
-        }
+		// verificar se é mov valido p/ a peça passando a peça da position
+		if (!originPiece?.canMoveTo(destination, destinationPiece)) {
+			throw new Error(`Não pode se movimentar para ${destination}`)
+		} else {
+			console.log(`pode se mover para: ${destination}`)
+		}
 
-        // outras peças
+		// verificar se vai ficar em cheque
 
-    }
+		// verificar se com base nas peças ao redor, é valido, ex: rei proximo a outro rei
 
-    public move(origin: Position, destination: Position) {
+		// definir an passant
 
-        // pegar peça origin
-        let originPiece = this.getPieceInPosition(origin)
-        let destinationPiece = this.getPieceInPosition(destination)
+		// capturar peça inimiga
+		if (destinationPiece) {
+			const index = this.pieces.indexOf(destinationPiece)
+			this.pieces.splice(index, 1)
+		}
 
-        // verificar se é mov valido p/ a peça passando a peça da position
-        if (!originPiece?.canMoveTo(destination, destinationPiece))
-            throw new Error(`Não pode se movimentar para ${destination}`)
-        else
-            console.log(`pode se mover para: ${destination}`)
+		//mover
+		originPiece.moveTo(destination)
+	}
 
-        // verificar se vai ficar em cheque
+	public getPieceInPosition(position: Position): Piece | undefined {
+		// for (let piece of this.pieces)
+		//     if (position.equals(piece.getPosition()))
+		//         return piece
 
-        // verificar se com base nas peças ao redor, é valido, ex: rei proximo a outro rei
+		// return false
 
-        // definir an passant
-
-        // capturar peça inimiga
-        if (destinationPiece) {
-            let index = this.pieces.indexOf(destinationPiece)
-            this.pieces.splice(index, 1)
-        }
-
-        //mover
-        originPiece.moveTo(destination)
-
-    }
-
-    public getPieceInPosition(position: Position): Piece | undefined {
-        
-        // for (let piece of this.pieces)
-        //     if (position.equals(piece.getPosition()))
-        //         return piece
-        
-        // return false
-
-        return this.pieces.find( 
-            piece => position.equals(piece.getPosition())
-        )
-    }
-
+		return this.pieces.find((piece) => position.equals(piece.getPosition()))
+	}
 }
-
 
 export default Board

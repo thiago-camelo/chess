@@ -1,8 +1,7 @@
-import CliInterface from "./CliInterface"
-import Board from "./Entities/Board"
+import CliInterface from './CliInterface'
+import Board from './Entities/Board'
 
-
-let game = new CliInterface(new Board())
+const game = new CliInterface(new Board())
 
 game.drawBoard()
 game.play() // mover peão

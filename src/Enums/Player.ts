@@ -1,5 +1,6 @@
-
 enum Player {
-    White,
-    Black,
+	White,
+	Black,
 }
+
+export default Player

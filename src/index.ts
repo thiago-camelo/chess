@@ -1,9 +1,9 @@
 import CliUI from './CliUI'
-import Jogo from './Contracts/Game'
+import Game from './Contracts/Game'
 import Board from './Entities/Board'
 import Position from './Entities/Position'
 
-const game: Jogo = new CliUI(new Board())
+const game: Game = new CliUI(new Board())
 
 game.drawBoard()
 

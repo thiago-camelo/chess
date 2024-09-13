@@ -1,8 +1,18 @@
+import Jogo from './Contracts/Game'
 import Board from './Entities/Board'
 import Position from './Entities/Position'
 
-class CliInterface {
+class CliInterface implements Jogo {
+
 	constructor(private board: Board) {}
+
+	drawMovesOf(position: Position): void {
+		throw new Error('Method not implemented.')
+	}
+
+	move(origin: Position, destination: Position): boolean {
+		return this.board.move(origin, destination)
+	}
 
 	public drawBoard(): void {
 		const indexes = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -33,8 +43,8 @@ class CliInterface {
 		console.log('')
 	}
 
-	public play() {
-		this.board.move(new Position(2, 2), new Position(2, 3))
+	public play(): void {
+		
 	}
 }
 

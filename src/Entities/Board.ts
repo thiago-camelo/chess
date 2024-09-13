@@ -31,16 +31,14 @@ class Board {
 		// outras peças
 	}
 
-	public move(origin: Position, destination: Position) {
-		// pegar peça origin
+	public move(origin: Position, destination: Position): boolean {
+		
 		const originPiece = this.getPieceInPosition(origin)
 		const destinationPiece = this.getPieceInPosition(destination)
 
 		// verificar se é mov valido p/ a peça passando a peça da position
 		if (!originPiece?.canMoveTo(destination, destinationPiece)) {
-			throw new Error(`Não pode se movimentar para ${destination}`)
-		} else {
-			console.log(`pode se mover para: ${destination}`)
+			return false
 		}
 
 		// verificar se vai ficar em cheque
@@ -57,6 +55,8 @@ class Board {
 
 		//mover
 		originPiece.moveTo(destination)
+
+		return true
 	}
 
 	public getPieceInPosition(position: Position): Piece | undefined {
@@ -68,6 +68,15 @@ class Board {
 
 		return this.pieces.find((piece) => position.equals(piece.getPosition()))
 	}
+
+	public getPieces(): Array<Piece> {
+		return this.pieces
+	}
+
+	public getRodada(): Player {
+		return this.rodada
+	}
+	
 }
 
 export default Board
